@@ -10,7 +10,7 @@
         justify-content: space-between;
         align-items: center;
   
-        > img {
+        a > img {
           max-height: 45px;
         }
 
@@ -107,6 +107,8 @@
 
       .question-list {
         margin-top: 32px;
+        display: flex;
+        flex-direction: column-reverse;
       }
     }
   }

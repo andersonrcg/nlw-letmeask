@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import logoImg from '../assets/images/logo.svg';
 import { Button } from '../components/Button';
@@ -63,7 +63,7 @@ export function Room() {
         <div id="page-room">
             <header>
                 <div className="content">
-                    <img src={logoImg} alt="LetMeAsk" />
+                    <Link to="/"><img src={logoImg} alt="LetMeAsk" /></Link>
                     <RoomCode code={roomId} />
                 </div>
             </header>
