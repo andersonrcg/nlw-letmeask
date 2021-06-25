@@ -33,12 +33,18 @@ export function useRoom(roomId: string) {
     const [questions, setQuestions] = useState<QuestionType[]>([]);
     const [title, setTitle] = useState('');
     const [authorIdRoom, setAuthorIdRoom] = useState('');
+    const [endedRoom, setEndedRoom] = useState(false);
 
     useEffect(() => {
         const roomRef = database.ref(`rooms/${roomId}`);
 
         roomRef.on('value', room => {
             const databaseRoom = room.val();
+
+            if(databaseRoom?.endedAt) {
+                setEndedRoom(true);
+            }
+
             const firebaseQuestions: FirebaseQuestions = databaseRoom?.questions ?? {};
 
             const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
@@ -53,9 +59,11 @@ export function useRoom(roomId: string) {
                 }
             })
 
+            const questionsSorted = parsedQuestions.sort((a, b)=> a.likeCount - b.likeCount);
+
             setTitle(databaseRoom?.title)
             setAuthorIdRoom(databaseRoom?.authorId)
-            setQuestions(parsedQuestions)
+            setQuestions(questionsSorted)
         })
 
         return () => {
@@ -63,5 +71,5 @@ export function useRoom(roomId: string) {
         }
     }, [roomId, user?.id])
 
-    return { questions, title, user, authorIdRoom };
+    return { questions, title, authorIdRoom, endedRoom };
 }
